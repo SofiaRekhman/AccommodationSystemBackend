@@ -1,0 +1,28 @@
+# Build folders
+bin/
+obj/
+# User-specific files
+.vs/
+*.user
+*.suo
+# Rider and JetBrains
+.idea/
+*.iml
+# Logs
+*.log
+# Other
+*.db
+*.DS_Store
+*.cache
+*.swp
+# ASP.NET Core specific
+appsettings.Development.json
+launchSettings.json
+# NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+# Publish output
+publish/
+wwwroot/lib/

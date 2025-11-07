@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\super\\RiderProjects\\AccommodationSystemBackend\\AccommodationSystemBackend\\AccommodationSystemBackend.csproj": {}
+    "C:\\Users\\ПК\\Desktop\\backend\\AccommodationSystemBackend\\AccommodationSystemBackend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\super\\RiderProjects\\AccommodationSystemBackend\\AccommodationSystemBackend\\AccommodationSystemBackend.csproj": {
+    "C:\\Users\\ПК\\Desktop\\backend\\AccommodationSystemBackend\\AccommodationSystemBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\super\\RiderProjects\\AccommodationSystemBackend\\AccommodationSystemBackend\\AccommodationSystemBackend.csproj",
+        "projectUniqueName": "C:\\Users\\ПК\\Desktop\\backend\\AccommodationSystemBackend\\AccommodationSystemBackend.csproj",
         "projectName": "AccommodationSystemBackend",
-        "projectPath": "C:\\Users\\super\\RiderProjects\\AccommodationSystemBackend\\AccommodationSystemBackend\\AccommodationSystemBackend.csproj",
-        "packagesPath": "C:\\Users\\super\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\super\\RiderProjects\\AccommodationSystemBackend\\AccommodationSystemBackend\\obj\\",
+        "projectPath": "C:\\Users\\ПК\\Desktop\\backend\\AccommodationSystemBackend\\AccommodationSystemBackend.csproj",
+        "packagesPath": "C:\\Users\\ПК\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ПК\\Desktop\\backend\\AccommodationSystemBackend\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\super\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\ПК\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -32,11 +36,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -79,7 +78,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.415/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
