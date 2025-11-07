@@ -1,0 +1,6 @@
+@AccommodationSystemBackend_HostAddress = http://localhost:5086
+
+GET {{AccommodationSystemBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
