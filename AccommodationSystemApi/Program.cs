@@ -1,9 +1,13 @@
+using AccommodationSystemApi.MappingProfiles;
+using BLL.Abstract;
 using BLL.Services;
-using DAL.Repositories;
+using DAL.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
@@ -16,8 +20,18 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
-builder.Services.AddScoped<IWeatherForecastService, WeatherForecastService>();
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(AppDbContext)));
+});
+
+
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<ReservationProfile>();
+});
+
+builder.Services.AddScoped<IReservationService, ReservationService>();
 
 var app = builder.Build();
 
@@ -44,9 +58,6 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.MapGet("/weatherforecast", (IWeatherForecastService weatherForecastService) =>
-    Results.Ok(weatherForecastService.GetForecast()))
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
+app.MapControllers();
 
 app.Run();
