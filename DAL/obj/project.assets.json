@@ -2481,11 +2481,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ПК\\Desktop\\backend\\DAL\\DAL.csproj",
+      "projectUniqueName": "C:\\Users\\ПК\\Desktop\\AccommodationSystemBackend\\DAL\\DAL.csproj",
       "projectName": "DAL",
-      "projectPath": "C:\\Users\\ПК\\Desktop\\backend\\DAL\\DAL.csproj",
+      "projectPath": "C:\\Users\\ПК\\Desktop\\AccommodationSystemBackend\\DAL\\DAL.csproj",
       "packagesPath": "C:\\Users\\ПК\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ПК\\Desktop\\backend\\DAL\\obj\\",
+      "outputPath": "C:\\Users\\ПК\\Desktop\\AccommodationSystemBackend\\DAL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

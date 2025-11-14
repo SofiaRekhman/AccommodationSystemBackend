@@ -3,6 +3,7 @@ using BLL.Abstract;
 using BLL.Models;
 using DAL.Data;
 using DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 using Status = DAL.Enums.Status;
 
 namespace BLL.Services
@@ -28,6 +29,28 @@ namespace BLL.Services
             await _dbContext.SaveChangesAsync();
 
             return reservation.ReservationId;
+        }
+
+        public async Task<GetReservationResponseModel?> GetReservationByIdAsync(int reservationId)
+        {
+            var reservation = await _dbContext.Reservations
+                .Include(r => r.User)
+                .FirstOrDefaultAsync(r => r.ReservationId == reservationId);
+
+            if (reservation == null)
+            {
+                return null;
+            }
+
+            return new GetReservationResponseModel
+            {
+                FullName = reservation.User?.FullName ?? string.Empty,
+                PhoneNumber = reservation.User?.PhoneNumber ?? string.Empty,
+                RoomId = reservation.RoomId,
+                BedId = 0, // bed_id не є частиною reservation в схемі БД
+                ReservationStartDate = reservation.StartDate.ToString("yyyy-MM-dd"),
+                ReservationEndDate = reservation.EndDate.ToString("yyyy-MM-dd")
+            };
         }
     }
 }

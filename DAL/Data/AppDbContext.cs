@@ -14,5 +14,7 @@ namespace DAL.Data
         public DbSet<Bed> Beds { get; set; }
         public DbSet<Status> Statuses { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
     }
 }
