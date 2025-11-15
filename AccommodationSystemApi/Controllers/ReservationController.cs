@@ -22,5 +22,26 @@ namespace AccommodationSystemApi.Controllers
 
             return Ok(reservationId);
         }
+
+        [HttpGet("{reservation_id}")]
+        public async Task<IActionResult> GetReservationByIdAsync(int reservation_id)
+        {
+            var reservation = await _reservationService.GetReservationByIdAsync(reservation_id);
+
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(new
+            {
+                full_name = reservation.FullName,
+                phone_number = reservation.PhoneNumber,
+                room_id = reservation.RoomId,
+                bed_id = reservation.BedId,
+                reservation_start_date = reservation.ReservationStartDate,
+                reservation_end_date = reservation.ReservationEndDate
+            });
+        }
     }
 }
