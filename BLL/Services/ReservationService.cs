@@ -31,6 +31,13 @@ namespace BLL.Services
             return reservation.ReservationId;
         }
 
+        public async Task<List<GetReservationsResponseModel>> GetReservationsAsync()
+        {
+            List<Reservation> reservations = await _dbContext.Reservations.ToListAsync();
+
+            return _mapper.Map<List<GetReservationsResponseModel>>(reservations);
+        }
+
         public async Task<GetReservationResponseModel?> GetReservationByIdAsync(int reservationId)
         {
             var reservation = await _dbContext.Reservations

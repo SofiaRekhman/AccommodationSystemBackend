@@ -23,6 +23,19 @@ namespace AccommodationSystemApi.Controllers
             return Ok(reservationId);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetReservationsAsync()
+        {
+            List<GetReservationsResponseModel> reservations = await _reservationService.GetReservationsAsync();
+
+            if (reservations == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(reservations);
+        }
+
         [HttpGet("{reservation_id}")]
         public async Task<IActionResult> GetReservationByIdAsync(int reservation_id)
         {
