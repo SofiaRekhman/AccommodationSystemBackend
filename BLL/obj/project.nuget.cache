@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "P6cY64wHGWUZaDac2HDY6WOgiVG6Bj6LCQucfO+AIr7y882A63tOY8rU5+h4Xo4TEmshcbFA52cwTUGynPUF8w==",
+  "dgSpecHash": "4th1q0NObhmZ5IhWRjpdx1a3+ynWoDMM7/skwN875NjTDwAdfszIlDIEKIyDfyBTPchkPNiVqx4Ss9G9vGSzEA==",
   "success": true,
   "projectFilePath": "C:\\Users\\ПК\\Desktop\\AccommodationSystemBackend\\BLL\\BLL.csproj",
   "expectedPackageFiles": [
@@ -24,8 +24,13 @@
     "C:\\Users\\ПК\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\ПК\\.nuget\\packages\\microsoft.extensions.options\\8.0.2\\microsoft.extensions.options.8.0.2.nupkg.sha512",
     "C:\\Users\\ПК\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "C:\\Users\\ПК\\.nuget\\packages\\microsoft.identitymodel.abstractions\\8.0.2\\microsoft.identitymodel.abstractions.8.0.2.nupkg.sha512",
+    "C:\\Users\\ПК\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.0.2\\microsoft.identitymodel.jsonwebtokens.8.0.2.nupkg.sha512",
+    "C:\\Users\\ПК\\.nuget\\packages\\microsoft.identitymodel.logging\\8.0.2\\microsoft.identitymodel.logging.8.0.2.nupkg.sha512",
+    "C:\\Users\\ПК\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.0.2\\microsoft.identitymodel.tokens.8.0.2.nupkg.sha512",
     "C:\\Users\\ПК\\.nuget\\packages\\npgsql\\8.0.3\\npgsql.8.0.3.nupkg.sha512",
-    "C:\\Users\\ПК\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\8.0.4\\npgsql.entityframeworkcore.postgresql.8.0.4.nupkg.sha512"
+    "C:\\Users\\ПК\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\8.0.4\\npgsql.entityframeworkcore.postgresql.8.0.4.nupkg.sha512",
+    "C:\\Users\\ПК\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.0.2\\system.identitymodel.tokens.jwt.8.0.2.nupkg.sha512"
   ],
   "logs": []
 }
