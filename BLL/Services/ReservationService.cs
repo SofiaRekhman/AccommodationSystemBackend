@@ -49,9 +49,20 @@ namespace BLL.Services
                 return null;
             }
 
+            var fullName = string.Empty;
+            if (reservation.User != null)
+            {
+                var nameParts = new List<string> { reservation.User.Name, reservation.User.Surname };
+                if (!string.IsNullOrEmpty(reservation.User.Patronymic))
+                {
+                    nameParts.Add(reservation.User.Patronymic);
+                }
+                fullName = string.Join(" ", nameParts);
+            }
+
             return new GetReservationResponseModel
             {
-                FullName = reservation.User?.FullName ?? string.Empty,
+                FullName = fullName,
                 PhoneNumber = reservation.User?.PhoneNumber ?? string.Empty,
                 RoomId = reservation.RoomId,
                 BedId = 0, // bed_id не є частиною reservation в схемі БД
