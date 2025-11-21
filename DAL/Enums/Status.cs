@@ -4,7 +4,7 @@
     {
         Created = 1,
         InProgress = 2,
-        Accespted = 3,
+        Accepted = 3,
         Rejected = 4
     }
 }

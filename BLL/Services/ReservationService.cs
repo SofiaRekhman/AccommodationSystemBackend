@@ -19,7 +19,7 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<int> CreateReservationAsync(PostReservationRequestModel requestModel)
+        public async Task<PostReservationResponseModel> CreateReservationAsync(PostReservationRequestModel requestModel)
         {
             Reservation reservation = _mapper.Map<Reservation>(requestModel);
 
@@ -28,7 +28,7 @@ namespace BLL.Services
             _dbContext.Reservations.Add(reservation);
             await _dbContext.SaveChangesAsync();
 
-            return reservation.ReservationId;
+            return new PostReservationResponseModel { ReservationId = reservation.ReservationId };
         }
 
         public async Task<List<GetReservationsResponseModel>> GetReservationsAsync()
@@ -42,6 +42,7 @@ namespace BLL.Services
         {
             var reservation = await _dbContext.Reservations
                 .Include(r => r.User)
+                .Include(r => r.Status)
                 .FirstOrDefaultAsync(r => r.ReservationId == reservationId);
 
             if (reservation == null)
@@ -65,9 +66,10 @@ namespace BLL.Services
                 FullName = fullName,
                 PhoneNumber = reservation.User?.PhoneNumber ?? string.Empty,
                 RoomId = reservation.RoomId,
-                BedId = 0, // bed_id не є частиною reservation в схемі БД
+                BedId = reservation.BedId,
                 ReservationStartDate = reservation.StartDate.ToString("yyyy-MM-dd"),
-                ReservationEndDate = reservation.EndDate.ToString("yyyy-MM-dd")
+                ReservationEndDate = reservation.EndDate.ToString("yyyy-MM-dd"),
+                ReservationStatusName = reservation.Status.StatusName
             };
         }
     }

@@ -18,9 +18,9 @@ namespace AccommodationSystemApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateReservationAsync(PostReservationRequestModel requestModel)
         {
-            int reservationId = await _reservationService.CreateReservationAsync(requestModel);
+            PostReservationResponseModel responseModel = await _reservationService.CreateReservationAsync(requestModel);
 
-            return Ok(reservationId);
+            return Ok(responseModel);
         }
 
         [HttpGet]
@@ -46,15 +46,7 @@ namespace AccommodationSystemApi.Controllers
                 return NotFound();
             }
 
-            return Ok(new
-            {
-                full_name = reservation.FullName,
-                phone_number = reservation.PhoneNumber,
-                room_id = reservation.RoomId,
-                bed_id = reservation.BedId,
-                reservation_start_date = reservation.ReservationStartDate,
-                reservation_end_date = reservation.ReservationEndDate
-            });
+            return Ok(reservation);
         }
     }
 }
