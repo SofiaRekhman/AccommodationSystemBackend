@@ -24,9 +24,9 @@ namespace AccommodationSystemApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetReservationsAsync()
+        public async Task<IActionResult> GetReservationsAsync([FromQuery] int userId)
         {
-            List<GetReservationsResponseModel> reservations = await _reservationService.GetReservationsAsync();
+            List<GetReservationsResponseModel> reservations = await _reservationService.GetReservationsAsync(userId);
 
             if (reservations == null)
             {

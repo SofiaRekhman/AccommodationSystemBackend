@@ -6,7 +6,6 @@ namespace BLL.Abstract
     {
         Task<LoginResponseModel> LoginAsync(LoginRequestModel request);
         Task<bool> RegisterAsync(RegisterRequestModel request);
-        Task<bool> LogoutAsync();
     }
 }
 

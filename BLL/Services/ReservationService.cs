@@ -31,9 +31,11 @@ namespace BLL.Services
             return new PostReservationResponseModel { ReservationId = reservation.ReservationId };
         }
 
-        public async Task<List<GetReservationsResponseModel>> GetReservationsAsync()
+        public async Task<List<GetReservationsResponseModel>> GetReservationsAsync(int userId)
         {
-            List<Reservation> reservations = await _dbContext.Reservations.ToListAsync();
+            List<Reservation> reservations = await _dbContext.Reservations
+                .Where(x => x.UserId == userId)
+                .ToListAsync();
 
             return _mapper.Map<List<GetReservationsResponseModel>>(reservations);
         }
@@ -71,6 +73,24 @@ namespace BLL.Services
                 ReservationEndDate = reservation.EndDate.ToString("yyyy-MM-dd"),
                 ReservationStatusName = reservation.Status.StatusName
             };
+        }
+
+        public async Task<List<GetAvailableRoomsResponseModel>> GetAvailableRoomsAsync(GetAvailableRoomsRequestModel requestModel)
+        {
+            List<int> occupiedBedIds = await _dbContext.Reservations
+            .Where(r => r.StatusId == (int)Status.Accepted &&
+                        r.StartDate < requestModel.DesiredReservationEndDate &&
+                        r.EndDate > requestModel.DesiredReservationStartDate)
+            .Select(r => r.BedId)
+            .Distinct()
+            .ToListAsync();
+
+            List<Room> availableRooms = await _dbContext.Rooms
+                .Where(room => room.Beds.Any(bed => !occupiedBedIds.Contains(bed.BedId)))
+                .OrderBy(room => room.RoomNumber)
+                .ToListAsync();
+
+            return _mapper.Map<List<GetAvailableRoomsResponseModel>>(availableRooms);
         }
     }
 }

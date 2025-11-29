@@ -157,13 +157,6 @@ namespace BLL.Services
 
             return true;
         }
-
-        public async Task<bool> LogoutAsync()
-        {
-            // With JWT tokens, logout is handled client-side by removing the token
-            // Server-side logout is not necessary for stateless JWT tokens
-            return true;
-        }
     }
 }
 

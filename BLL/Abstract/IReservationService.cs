@@ -5,7 +5,7 @@ namespace BLL.Abstract
     public interface IReservationService
     {
         Task<PostReservationResponseModel> CreateReservationAsync(PostReservationRequestModel requestModel);
-        Task<List<GetReservationsResponseModel>> GetReservationsAsync();
+        Task<List<GetReservationsResponseModel>> GetReservationsAsync(int userId);
         Task<GetReservationResponseModel?> GetReservationByIdAsync(int reservationId);
     }
 }
