@@ -24,9 +24,11 @@ namespace AccommodationSystemApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetReservationsAsync([FromQuery] int userId)
+        public async Task<IActionResult> GetReservationsAsync([FromQuery] int? userId,
+                                                              [FromQuery] int? statusId,
+                                                              [FromQuery] string? sortBy)
         {
-            List<GetReservationsResponseModel> reservations = await _reservationService.GetReservationsAsync(userId);
+            List<GetReservationsResponseModel> reservations = await _reservationService.GetReservationsAsync(userId, statusId, sortBy);
 
             if (reservations == null)
             {
@@ -47,6 +49,19 @@ namespace AccommodationSystemApi.Controllers
             }
 
             return Ok(reservation);
+        }
+
+        [HttpPut("{reservation_id}")]
+        public async Task<IActionResult> UpdateReservationAsync(int reservation_id, PutReservationRequestModel requestModel)
+        {
+            int? result = await _reservationService.UpdateReservationAsync(reservation_id, requestModel);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
         }
     }
 }

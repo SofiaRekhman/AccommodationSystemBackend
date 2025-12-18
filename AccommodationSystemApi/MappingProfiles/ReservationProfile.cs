@@ -15,9 +15,8 @@ namespace AccommodationSystemApi.MappingProfiles
 
             CreateMap<Reservation, GetReservationsResponseModel>()
                 .ForMember(dest => dest.ReservationStartDate, i => i.MapFrom(src => src.StartDate.ToString("yyyy-MM-dd")))
+                .ForMember(dest => dest.ReservationStatusName, i => i.MapFrom(src => src.Status.StatusName))
                 .ForMember(dest => dest.CreatedAt, i => i.MapFrom(src => src.CreatedAt.ToString("yyyy-MM-dd")));
-
-            CreateMap<Room, GetAvailableRoomsResponseModel>();
         }
     }
 }

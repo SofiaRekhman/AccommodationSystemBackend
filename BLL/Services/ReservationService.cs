@@ -31,14 +31,26 @@ namespace BLL.Services
             return new PostReservationResponseModel { ReservationId = reservation.ReservationId };
         }
 
-        public async Task<List<GetReservationsResponseModel>> GetReservationsAsync(int userId)
+        public async Task<List<GetReservationsResponseModel>> GetReservationsAsync(int? userId, int? statusId, string? sortBy)
         {
-            List<Reservation> reservations = await _dbContext.Reservations
-                .Where(x => x.UserId == userId)
-                .ToListAsync();
+            IQueryable<Reservation> query = _dbContext.Reservations
+                .Include(x => x.Status)
+                .Where(x => userId == null || x.UserId == userId)
+                .Where(x => statusId == null || x.StatusId == statusId);
+
+            query = sortBy switch
+            {
+                "dateAsc" => query.OrderBy(x => x.StartDate),
+                "createdDesc" => query.OrderByDescending(x => x.CreatedAt),
+                "createdAsc" => query.OrderBy(x => x.CreatedAt),
+                _ => query.OrderByDescending(x => x.StartDate),
+            };
+
+            List<Reservation> reservations = await query.ToListAsync();
 
             return _mapper.Map<List<GetReservationsResponseModel>>(reservations);
         }
+
 
         public async Task<GetReservationResponseModel?> GetReservationByIdAsync(int reservationId)
         {
@@ -75,22 +87,23 @@ namespace BLL.Services
             };
         }
 
-        public async Task<List<GetAvailableRoomsResponseModel>> GetAvailableRoomsAsync(GetAvailableRoomsRequestModel requestModel)
+        public async Task<int?> UpdateReservationAsync(int reservationId, PutReservationRequestModel requestModel)
         {
-            List<int> occupiedBedIds = await _dbContext.Reservations
-            .Where(r => r.StatusId == (int)Status.Accepted &&
-                        r.StartDate < requestModel.DesiredReservationEndDate &&
-                        r.EndDate > requestModel.DesiredReservationStartDate)
-            .Select(r => r.BedId)
-            .Distinct()
-            .ToListAsync();
+            var reservation = await _dbContext.Reservations
+                .FirstOrDefaultAsync(r => r.ReservationId == reservationId);
 
-            List<Room> availableRooms = await _dbContext.Rooms
-                .Where(room => room.Beds.Any(bed => !occupiedBedIds.Contains(bed.BedId)))
-                .OrderBy(room => room.RoomNumber)
-                .ToListAsync();
+            if (reservation == null)
+            {
+                return null;
+            }
 
-            return _mapper.Map<List<GetAvailableRoomsResponseModel>>(availableRooms);
+            reservation.StatusId = requestModel.StatusId;
+            reservation.AdminComment = requestModel.AdminComment;
+
+            _dbContext.Reservations.Update(reservation);
+            await _dbContext.SaveChangesAsync();
+
+            return reservationId;
         }
     }
 }
