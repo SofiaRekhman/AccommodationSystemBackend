@@ -63,5 +63,13 @@ namespace AccommodationSystemApi.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("available-options")]
+        public async Task<ActionResult<List<RoomAvailabilityResponseDto>>> GetAvailableOptions([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        {
+            List<RoomAvailabilityResponseDto> options = await _reservationService.GetAvailableRoomsWithBedsAsync(startDate, endDate);
+
+            return Ok(options);
+        }
     }
 }

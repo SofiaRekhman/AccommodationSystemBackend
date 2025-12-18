@@ -57,6 +57,8 @@ namespace BLL.Services
             var reservation = await _dbContext.Reservations
                 .Include(r => r.User)
                 .Include(r => r.Status)
+                .Include(r => r.Bed)
+                .Include(r => r.Room)
                 .FirstOrDefaultAsync(r => r.ReservationId == reservationId);
 
             if (reservation == null)
@@ -79,8 +81,8 @@ namespace BLL.Services
             {
                 FullName = fullName,
                 PhoneNumber = reservation.User?.PhoneNumber ?? string.Empty,
-                RoomId = reservation.RoomId,
-                BedId = reservation.BedId,
+                RoomNumber = reservation.Room.RoomNumber,
+                BedNumber = reservation.Bed.BedNumber,
                 ReservationStartDate = reservation.StartDate.ToString("yyyy-MM-dd"),
                 ReservationEndDate = reservation.EndDate.ToString("yyyy-MM-dd"),
                 ReservationStatusName = reservation.Status.StatusName
@@ -104,6 +106,29 @@ namespace BLL.Services
             await _dbContext.SaveChangesAsync();
 
             return reservationId;
+        }
+
+        public async Task<List<RoomAvailabilityResponseDto>> GetAvailableRoomsWithBedsAsync(DateTime startDate, DateTime endDate)
+        {
+            List<int> occupiedBedIds = await _dbContext.Reservations
+                .Where(r => r.StartDate < endDate && r.EndDate > startDate)
+                .Select(r => r.BedId)
+                .ToListAsync();
+
+            List<RoomAvailabilityResponseDto> availableData = await _dbContext.Rooms
+                .Select(r => new RoomAvailabilityResponseDto
+                {
+                    RoomId = r.RoomId,
+                    RoomNumber = r.RoomNumber,
+                    AvailableBeds = r.Beds
+                        .Where(b => !occupiedBedIds.Contains(b.BedId))
+                        .ToList()
+                })
+                .Where(r => r.AvailableBeds.Any())
+                .OrderBy(r => r.RoomNumber)
+                .ToListAsync();
+
+            return availableData;
         }
     }
 }
