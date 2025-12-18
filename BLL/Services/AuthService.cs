@@ -78,7 +78,6 @@ namespace BLL.Services
                     Id = user.Id,
                     Name = user.Name,
                     Surname = user.Surname,
-                    Patronymic = user.Patronymic,
                     Email = user.Email ?? string.Empty,
                     PhoneNumber = user.PhoneNumber ?? string.Empty,
                     RoleId = user.RoleId
@@ -142,7 +141,6 @@ namespace BLL.Services
                 PhoneNumber = request.PhoneNumber,
                 Name = request.Name,
                 Surname = request.Surname,
-                Patronymic = request.Patronymic,
                 RoleId = request.RoleId,
                 AdminIdentifier = request.AdminIdentifier,
                 CreatedAt = DateTime.UtcNow

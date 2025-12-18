@@ -70,10 +70,6 @@ namespace BLL.Services
             if (reservation.User != null)
             {
                 var nameParts = new List<string> { reservation.User.Name, reservation.User.Surname };
-                if (!string.IsNullOrEmpty(reservation.User.Patronymic))
-                {
-                    nameParts.Add(reservation.User.Patronymic);
-                }
                 fullName = string.Join(" ", nameParts);
             }
 
@@ -102,6 +98,7 @@ namespace BLL.Services
 
             reservation.StatusId = requestModel.StatusId;
             reservation.AdminComment = requestModel.AdminComment;
+            reservation.UpdatedAt = DateTime.UtcNow;
 
             _dbContext.Reservations.Update(reservation);
             await _dbContext.SaveChangesAsync();

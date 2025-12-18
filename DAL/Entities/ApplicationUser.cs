@@ -6,7 +6,6 @@ namespace DAL.Entities
     {
         public string Name { get; set; } = string.Empty;
         public string Surname { get; set; } = string.Empty;
-        public string? Patronymic { get; set; }
         public string? AdminIdentifier { get; set; }
         public int RoleId { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
