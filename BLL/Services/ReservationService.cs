@@ -85,7 +85,8 @@ namespace BLL.Services
                 BedNumber = reservation.Bed.BedNumber,
                 ReservationStartDate = reservation.StartDate.ToString("yyyy-MM-dd"),
                 ReservationEndDate = reservation.EndDate.ToString("yyyy-MM-dd"),
-                ReservationStatusName = reservation.Status.StatusName
+                ReservationStatusName = reservation.Status.StatusName,
+                AdminComment = reservation.AdminComment
             };
         }
 

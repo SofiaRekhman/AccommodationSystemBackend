@@ -9,6 +9,7 @@ namespace BLL.Models
         public string ReservationStartDate { get; set; }
         public string ReservationEndDate { get; set; }
         public string ReservationStatusName { get; set; }
+        public string? AdminComment { get; set; }
     }
 }
 
