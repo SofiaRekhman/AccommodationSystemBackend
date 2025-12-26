@@ -78,7 +78,6 @@ namespace BLL.Services
                     Id = user.Id,
                     Name = user.Name,
                     Surname = user.Surname,
-                    Patronymic = user.Patronymic,
                     Email = user.Email ?? string.Empty,
                     PhoneNumber = user.PhoneNumber ?? string.Empty,
                     RoleId = user.RoleId
@@ -142,7 +141,6 @@ namespace BLL.Services
                 PhoneNumber = request.PhoneNumber,
                 Name = request.Name,
                 Surname = request.Surname,
-                Patronymic = request.Patronymic,
                 RoleId = request.RoleId,
                 AdminIdentifier = request.AdminIdentifier,
                 CreatedAt = DateTime.UtcNow
@@ -155,13 +153,6 @@ namespace BLL.Services
                 return false;
             }
 
-            return true;
-        }
-
-        public async Task<bool> LogoutAsync()
-        {
-            // With JWT tokens, logout is handled client-side by removing the token
-            // Server-side logout is not necessary for stateless JWT tokens
             return true;
         }
     }

@@ -30,10 +30,7 @@ namespace AccommodationSystemApi.Controllers
                 return Unauthorized(new { message = result.Message });
             }
 
-            return Ok(new
-            {
-                access_token = result.AccessToken
-            });
+            return Ok(result);
         }
 
         [HttpPost("register")]
@@ -52,19 +49,6 @@ namespace AccommodationSystemApi.Controllers
             }
 
             return Ok(new { message = "Registration successful." });
-        }
-
-        [HttpPost("logout")]
-        public async Task<IActionResult> LogoutAsync()
-        {
-            var result = await _authService.LogoutAsync();
-
-            if (!result)
-            {
-                return BadRequest(new { message = "Logout failed." });
-            }
-
-            return Ok(new { message = "Logout successful." });
         }
     }
 }

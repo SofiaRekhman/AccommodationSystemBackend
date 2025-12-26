@@ -18,15 +18,17 @@ namespace AccommodationSystemApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateReservationAsync(PostReservationRequestModel requestModel)
         {
-            int reservationId = await _reservationService.CreateReservationAsync(requestModel);
+            PostReservationResponseModel responseModel = await _reservationService.CreateReservationAsync(requestModel);
 
-            return Ok(reservationId);
+            return Ok(responseModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetReservationsAsync()
+        public async Task<IActionResult> GetReservationsAsync([FromQuery] int? userId,
+                                                              [FromQuery] int? statusId,
+                                                              [FromQuery] string? sortBy)
         {
-            List<GetReservationsResponseModel> reservations = await _reservationService.GetReservationsAsync();
+            List<GetReservationsResponseModel> reservations = await _reservationService.GetReservationsAsync(userId, statusId, sortBy);
 
             if (reservations == null)
             {
@@ -46,15 +48,28 @@ namespace AccommodationSystemApi.Controllers
                 return NotFound();
             }
 
-            return Ok(new
+            return Ok(reservation);
+        }
+
+        [HttpPut("{reservation_id}")]
+        public async Task<IActionResult> UpdateReservationAsync(int reservation_id, PutReservationRequestModel requestModel)
+        {
+            int? result = await _reservationService.UpdateReservationAsync(reservation_id, requestModel);
+
+            if (result == null)
             {
-                full_name = reservation.FullName,
-                phone_number = reservation.PhoneNumber,
-                room_id = reservation.RoomId,
-                bed_id = reservation.BedId,
-                reservation_start_date = reservation.ReservationStartDate,
-                reservation_end_date = reservation.ReservationEndDate
-            });
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("available-options")]
+        public async Task<ActionResult<List<RoomAvailabilityResponseDto>>> GetAvailableOptions([FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        {
+            List<RoomAvailabilityResponseDto> options = await _reservationService.GetAvailableRoomsWithBedsAsync(startDate, endDate);
+
+            return Ok(options);
         }
     }
 }

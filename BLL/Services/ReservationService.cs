@@ -19,7 +19,7 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<int> CreateReservationAsync(PostReservationRequestModel requestModel)
+        public async Task<PostReservationResponseModel> CreateReservationAsync(PostReservationRequestModel requestModel)
         {
             Reservation reservation = _mapper.Map<Reservation>(requestModel);
 
@@ -28,20 +28,37 @@ namespace BLL.Services
             _dbContext.Reservations.Add(reservation);
             await _dbContext.SaveChangesAsync();
 
-            return reservation.ReservationId;
+            return new PostReservationResponseModel { ReservationId = reservation.ReservationId };
         }
 
-        public async Task<List<GetReservationsResponseModel>> GetReservationsAsync()
+        public async Task<List<GetReservationsResponseModel>> GetReservationsAsync(int? userId, int? statusId, string? sortBy)
         {
-            List<Reservation> reservations = await _dbContext.Reservations.ToListAsync();
+            IQueryable<Reservation> query = _dbContext.Reservations
+                .Include(x => x.Status)
+                .Where(x => userId == null || x.UserId == userId)
+                .Where(x => statusId == null || x.StatusId == statusId);
+
+            query = sortBy switch
+            {
+                "dateAsc" => query.OrderBy(x => x.StartDate),
+                "createdDesc" => query.OrderByDescending(x => x.CreatedAt),
+                "createdAsc" => query.OrderBy(x => x.CreatedAt),
+                _ => query.OrderByDescending(x => x.StartDate),
+            };
+
+            List<Reservation> reservations = await query.ToListAsync();
 
             return _mapper.Map<List<GetReservationsResponseModel>>(reservations);
         }
+
 
         public async Task<GetReservationResponseModel?> GetReservationByIdAsync(int reservationId)
         {
             var reservation = await _dbContext.Reservations
                 .Include(r => r.User)
+                .Include(r => r.Status)
+                .Include(r => r.Bed)
+                .Include(r => r.Room)
                 .FirstOrDefaultAsync(r => r.ReservationId == reservationId);
 
             if (reservation == null)
@@ -53,10 +70,6 @@ namespace BLL.Services
             if (reservation.User != null)
             {
                 var nameParts = new List<string> { reservation.User.Name, reservation.User.Surname };
-                if (!string.IsNullOrEmpty(reservation.User.Patronymic))
-                {
-                    nameParts.Add(reservation.User.Patronymic);
-                }
                 fullName = string.Join(" ", nameParts);
             }
 
@@ -64,11 +77,56 @@ namespace BLL.Services
             {
                 FullName = fullName,
                 PhoneNumber = reservation.User?.PhoneNumber ?? string.Empty,
-                RoomId = reservation.RoomId,
-                BedId = 0, // bed_id не є частиною reservation в схемі БД
+                RoomNumber = reservation.Room.RoomNumber,
+                BedNumber = reservation.Bed.BedNumber,
                 ReservationStartDate = reservation.StartDate.ToString("yyyy-MM-dd"),
-                ReservationEndDate = reservation.EndDate.ToString("yyyy-MM-dd")
+                ReservationEndDate = reservation.EndDate.ToString("yyyy-MM-dd"),
+                ReservationStatusName = reservation.Status.StatusName,
+                AdminComment = reservation.AdminComment
             };
+        }
+
+        public async Task<int?> UpdateReservationAsync(int reservationId, PutReservationRequestModel requestModel)
+        {
+            var reservation = await _dbContext.Reservations
+                .FirstOrDefaultAsync(r => r.ReservationId == reservationId);
+
+            if (reservation == null)
+            {
+                return null;
+            }
+
+            reservation.StatusId = requestModel.StatusId;
+            reservation.AdminComment = requestModel.AdminComment;
+            reservation.UpdatedAt = DateTime.UtcNow;
+
+            _dbContext.Reservations.Update(reservation);
+            await _dbContext.SaveChangesAsync();
+
+            return reservationId;
+        }
+
+        public async Task<List<RoomAvailabilityResponseDto>> GetAvailableRoomsWithBedsAsync(DateTime startDate, DateTime endDate)
+        {
+            List<int> occupiedBedIds = await _dbContext.Reservations
+                .Where(r => r.StartDate < endDate && r.EndDate > startDate)
+                .Select(r => r.BedId)
+                .ToListAsync();
+
+            List<RoomAvailabilityResponseDto> availableData = await _dbContext.Rooms
+                .Select(r => new RoomAvailabilityResponseDto
+                {
+                    RoomId = r.RoomId,
+                    RoomNumber = r.RoomNumber,
+                    AvailableBeds = r.Beds
+                        .Where(b => !occupiedBedIds.Contains(b.BedId))
+                        .ToList()
+                })
+                .Where(r => r.AvailableBeds.Any())
+                .OrderBy(r => r.RoomNumber)
+                .ToListAsync();
+
+            return availableData;
         }
     }
 }
