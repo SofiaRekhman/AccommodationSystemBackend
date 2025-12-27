@@ -82,6 +82,7 @@ namespace BLL.Services
                 ReservationStartDate = reservation.StartDate.ToString("yyyy-MM-dd"),
                 ReservationEndDate = reservation.EndDate.ToString("yyyy-MM-dd"),
                 ReservationStatusName = reservation.Status.StatusName,
+                Reason = reservation.Reason,
                 AdminComment = reservation.AdminComment
             };
         }
@@ -109,7 +110,7 @@ namespace BLL.Services
         public async Task<List<RoomAvailabilityResponseDto>> GetAvailableRoomsWithBedsAsync(DateTime startDate, DateTime endDate)
         {
             List<int> occupiedBedIds = await _dbContext.Reservations
-                .Where(r => r.StartDate < endDate && r.EndDate > startDate)
+                .Where(r => r.StartDate <= endDate && r.EndDate >= startDate)
                 .Select(r => r.BedId)
                 .ToListAsync();
 
